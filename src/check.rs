@@ -17,7 +17,8 @@ pub enum CheckType {
 type Id = (u8,u8);
 
 ///
-/// Checks if the `Result` value contains the expected variant
+/// Checks if the `Result` value contains the expected variant.
+/// If the `Ok` variant is expected and the check is Passed, the value contained in the `Ok` variant is returned. If an `Err` is expected and the check is Passed, `None` is returned
 pub fn check_result<T,U>(id: Id, obtained: Result<T, U>, expected_ok: bool) -> Result<Option<T>, String> {
     match expected_ok {
         true => {
@@ -36,7 +37,8 @@ pub fn check_result<T,U>(id: Id, obtained: Result<T, U>, expected_ok: bool) -> R
 }
 
 ///
-/// Checks if the `Option` value contains the expected variant
+/// Checks if the `Option` value contains the expected variant.
+/// If the `Some` variant is expected and the check is Passed, the value contained in the `Some` variant is returned. If an `None` is expected and the check is Passed, `None` is returned
 pub fn check_option<T>(id: Id, obtained: Option<T>, expected_some: bool) -> Result<Option<T>, String> {
     match expected_some {
         true => {
