@@ -16,15 +16,27 @@ pub enum CheckType {
 
 type Id = (u8,u8);
 
+
+/// Checks if the obtained result matches the expected condition and returns the result
 ///
-/// Checks if the `Result` value contains the expected variant.
-/// If the `Ok` variant is expected and the check is Passed, the value contained in the `Ok` variant is returned. If an `Err` is expected and the check is Passed, `None` is returned
-pub fn check_result<T,U>(id: Id, obtained: Result<T, U>, expected_ok: bool) -> Result<Option<T>, String> {
+/// # Arguments
+///
+/// * `id` - The identifier of the step
+/// * `obtained` - The obtained result
+/// * `expected_ok` - Boolean indicating whether the expected result should be Ok or Err
+///
+/// # Returns
+///
+/// * `Ok(Some(value))` if the obtained result is Ok and matches the expected condition
+/// * `Err(error_message)` if the obtained result is not as expected
+/// * `Ok(None)` if the obtained result is Err and matches the expected condition
+///
+pub fn check_result<T,U: Debug>(id: Id, obtained: Result<T, U>, expected_ok: bool) -> Result<Option<T>, String> {
     match expected_ok {
         true => {
             match obtained {
                 Ok(a) => Ok(Some(a)),
-                Err(_) => Err(format!("Step {}.{} : Obtained result should be Ok, got Err", id.0, id.1)),
+                Err(err) => Err(format!("Step {}.{} : Obtained result should be Ok, got Err. Error message is {:?}", id.0, id.1, err)),
             }
         },
         false => {
@@ -35,6 +47,8 @@ pub fn check_result<T,U>(id: Id, obtained: Result<T, U>, expected_ok: bool) -> R
         },
     }
 }
+
+
 
 ///
 /// Checks if the `Option` value contains the expected variant.
@@ -74,7 +88,7 @@ pub fn check_struct<T: PartialEq + Debug>(id: Id, obtained: &T, expected: &T, ch
                 Ok(())
             }
         },
-        _ => Err(format!("Check type not consistant"))
+        _ => Err("Check type not consistant".to_string())
     }
 }
 
