@@ -17,7 +17,7 @@ pub enum CheckType {
 type Id = (u8,u8);
 
 
-/// Checks if the obtained result matches the expected condition and returns the result
+/// Checks if the obtained result matches the expected condition (`Ok` or `Err`) and returns the result.
 ///
 /// # Arguments
 ///
@@ -50,9 +50,21 @@ pub fn check_result<T,U: Debug>(id: Id, obtained: Result<T, U>, expected_ok: boo
 
 
 
-///
 /// Checks if the `Option` value contains the expected variant.
 /// If the `Some` variant is expected and the check is Passed, the value contained in the `Some` variant is returned. If an `None` is expected and the check is Passed, `None` is returned
+///
+/// # Arguments
+///
+/// * `id` - The identifier of the step
+/// * `obtained` - The obtained option
+/// * `expected_some` - Boolean indicating whether the expected option should be Some or None
+///
+/// # Returns
+///
+/// * `Ok(Some(value))` if the obtained option is Some and matches the expected condition
+/// * `Err(error_message)` if the obtained option is not as expected
+/// * `Ok(None)` if the obtained option is None and matches the expected condition
+///
 pub fn check_option<T>(id: Id, obtained: Option<T>, expected_some: bool) -> Result<Option<T>, String> {
     match expected_some {
         true => {
@@ -70,8 +82,20 @@ pub fn check_option<T>(id: Id, obtained: Option<T>, expected_some: bool) -> Resu
     }
 }
 
+/// Checks if two structures are equal or different based on the `CheckType`.
 ///
-/// Structure equality check
+/// # Arguments
+///
+/// * `id` - The identifier of the step
+/// * `obtained` - The obtained structure
+/// * `expected` - The expected structure
+/// * `check_type` - The type of check to perform (Equal or Different)
+///
+/// # Returns
+///
+/// * `Ok(())` if the check passes
+/// * `Err(error_message)` if the check fails or if the check type is not consistent (not Equal or Different)
+///
 pub fn check_struct<T: PartialEq + Debug>(id: Id, obtained: &T, expected: &T, check_type: CheckType) -> Result<(), String> {
     match check_type {
         CheckType::Equal => {
@@ -92,8 +116,20 @@ pub fn check_struct<T: PartialEq + Debug>(id: Id, obtained: &T, expected: &T, ch
     }
 }
 
+/// Checks if a value satisfies the condition relative to an expected value.
 ///
-/// Value check
+/// # Arguments
+///
+/// * `id` - The identifier of the step
+/// * `obtained` - The obtained value
+/// * `expected` - The expected value
+/// * `check_type` - The type of check to perform (Equal, Different, Superior, etc.)
+///
+/// # Returns
+///
+/// * `Ok(())` if the check passes
+/// * `Err(error_message)` if the check fails
+///
 pub fn check_value<T: PartialEq + PartialOrd + Debug>(id: Id, obtained: &T, expected: &T, check_type: CheckType) -> Result<(), String> {
     match check_type {
         CheckType::Equal => {
