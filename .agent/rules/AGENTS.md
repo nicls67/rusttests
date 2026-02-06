@@ -25,7 +25,7 @@ The repo contains the `rusttests` library which facilitates Rust code testing pr
 - Update and run tests after each code update.
 - If you need to touch multiple crates, explain why in the final response.
 - Always ask for user review after generating a action plan. Never update code by yourself.
-- Update the package version after each change following SEMVER rules.
+- Update the package version after each change following SEMVER rules by comparison with the last tag, version shall not be necessarily updated after each commit.
 
 ## Naming rules
 1. Follow standard Rust naming conventions (snake_case for variables/functions, CamelCase for types/traits, SCREAMING_SNAKE_CASE for constants).
