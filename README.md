@@ -86,7 +86,3 @@ let s2 = MyStruct { a: 1 };
 
 check_struct((4, 1), &s1, &s2, CheckType::Equal);
 ```
-
-## Contributing
-
-Contributions are welcome! Please follow the guidelines in `AGENTS.md`.
